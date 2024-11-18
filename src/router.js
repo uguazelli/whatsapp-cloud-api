@@ -1,18 +1,15 @@
-import { getSession } from "./util/session.js";
+import { getSession, updateSession, clearSession } from "./util/session.js";
 import { sendMessage, markMessageAsRead } from "./system/whatsapp.js";
 import { mainMenu } from "./controller/mainMenu.js";
 import { handleExit } from "./controller/exit.js";
 import { handleServiceSelection } from "./controller/services.js";
 import { handleContactSelection } from "./controller/contact.js";
 
-
 const router = (req) => {
-  
   const values = req.body.entry?.[0]?.changes[0]?.value;
   const message = values?.messages?.[0];
 
   if (message) {
-    
     const businessPhoneNumberId = values?.metadata?.phone_number_id;
     const contactName = values?.contacts[0]?.profile?.name;
     const menuReplyId = message?.interactive?.list_reply?.id;
@@ -44,9 +41,11 @@ const router = (req) => {
       whatsapp: (from) => handleServiceSelection(menuReplyId, from),
     };
 
-    
+    // Get the payload based on the replyId, or use mainMenu by default
     const action = actionMap[replyId];
-    const payload = action ? action(message.from) : mainMenu(message.from, contactName);
+    const payload = action
+      ? action(message.from)
+      : mainMenu(message.from, contactName);
 
     // Respond to message
     sendMessage(businessPhoneNumberId, payload);

@@ -96,8 +96,13 @@ export const clientContactInfoDialog = (recipientPhoneNumber) => {
       type: "button",
       body: {
         text:
-          `¡Hola <nombre>! Vamos a ponernos en contacto por este número.\n\n` +
-          `📞 Si prefieres, puedes escribir un número alternativo o un correo electrónico que te acomode más.` ,
+          `¡Hola! Aquí tienes nuestra información de contacto:\n\n` +
+          `📞 **Teléfono:** +55 9 11 27978237\n` +
+          `📧 **Email:** admin@boxdigital.net\n` +
+          `🌐 **Sitio web:** [www.luatron.com](https://www.luatron.com)\n\n` +
+          `Si tienes alguna pregunta o necesitas asistencia, no dudes en ponerte en contacto con nosotros.\n\n` +
+          `Para más información sobre MuleSoft, consulta nuestra página web en el menú MuleSoft:\n` +
+          `https://www.luatron.com/mulesoft`,
       },
       action: {
         buttons: [
@@ -126,13 +131,6 @@ export const handleContactSelection = (replyId, from) => {
   });
 
   if (replyId == "our_contact") return ourContactInfoDialog(from);
-  else if (replyId == "client_contact") {
-    updateSession(from, {
-    currentMenu: "client_contact_info",
-    previousMenu: "contact_menu",
-    data: {},
-  });
-    return clientContactInfoDialog(from);
-  }
+  else if (replyId == "client_contact") return clientContactInfoDialog(from);
   else return contactMenuDialog(from);
 };
