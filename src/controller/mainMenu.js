@@ -55,4 +55,7 @@ export const mainMenu = (from, contactName) => {
   });
 
   return mainMenuDialog(from, contactName);
+  sendMessage(businessPhoneNumberId, payload);
+  // Mark it as read
+  markMessageAsRead(businessPhoneNumberId, message.id);
 };
